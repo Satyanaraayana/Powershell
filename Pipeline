@@ -4,6 +4,7 @@ Pipeline types
     Output will be saved as files on Disk
     Action will be performed on background it will not display or not save in any files
 >get-service // It will give the list of services which are running on the system
+-----------------------------------------
 >get-service | get-member  // get-member =It will give member type Defination (Methodes)
   
 PS C:\WINDOWS\system32> get-service | gm
@@ -23,3 +24,4 @@ CanPauseAndContinue       Property      bool CanPauseAndContinue {get;}
 CanShutdown               Property      bool CanShutdown {get;}
 CanStop                   Property      bool CanStop {get;}
 Container                 Property      System.ComponentModel.IContainer Container {get;}
+----------------------------------------------------------------
