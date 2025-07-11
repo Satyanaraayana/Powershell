@@ -1,11 +1,11 @@
 Commandlets
-Pipeline types
+Pipeline types (It gives Output of the 1st commandlet as a Input to 2nd commandlet)
     Output will be displayed on console
     Output will be saved as files on Disk
     Action will be performed on background it will not display or not save in any files
 >get-service // It will give the list of services which are running on the system
 -----------------------------------------
->get-service | get-member  // get-member =It will give member type Defination (Methodes)
+>get-service | get-member  // get-member :It will give member type Defination (Methodes)
   
 PS C:\WINDOWS\system32> get-service | gm
    TypeName: System.ServiceProcess.ServiceController
@@ -25,3 +25,107 @@ CanShutdown               Property      bool CanShutdown {get;}
 CanStop                   Property      bool CanStop {get;}
 Container                 Property      System.ComponentModel.IContainer Container {get;}
 ----------------------------------------------------------------
+// -Verbos = It gives information about which task is performing background ("Bits" :backgroung Intellegent transfer service).
+>get-service -name vss | stop-service -Verbos
+ ---------------------   -----------   ----
+
+out-file : Output will be saved on files like C:\output\service.txt  <>get-service | out-file C:\output\service.txt >
+Note: Out-file will not give output as a input to next commandlet ----( >get-service | out-file C:\output\service.txt | stop-service  // this will not work to stop-service)
+Expoert-Csv
+Export-Clixml
+
+out-host : output will be displayed on console ----(  >get-service | out-host)
+out-default
+convertTo-Csv 
+    >get-service | ConvertTo-Csv
+    >get-service | ConvertTo-Csv | out-file C:\csv.txt
+ConvertTo-Html
+
+-------------------------------------
+get-process : It will give all running process
+select-object : it gives selective objective information like columns (name, vm, cpu, ws, processer)
+Format-Table : output will be given in the form of Table
+>get-process | select-object name,vm, cpu, ws, processer
+
+PS C:\WINDOWS\system32> get-process
+
+Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
+-------  ------    -----      -----     ------     --  -- -----------
+    211      13     3980       5868       2.66   6160   0 AggregatorHost
+    324      16    23304      41756       0.34  12432   6 ai
+    153      10     2564       2296      13.19   3332   0 amdfendrsr
+    523      21     5752      94704       0.38  12196   6 AMDRSServ
+    325      30    45528      57108       2.38   7860   6 AMDRSSrcExt
+    526      22    10380      22512      17.33   3872   0 AppHelperCap
+    .
+    .
+PS C:\WINDOWS\system32> get-process | select-object name,vm, cpu 
+
+Name                                        VM        CPU
+----                                        --        ---
+AggregatorHost                   2203420815360    2.65625
+ai                               2203544174592    0.34375
+amdfendrsr                          4388356096    13.1875
+AMDRSServ                           4772048896      0.375
+AMDRSSrcExt                         4870103040   2.390625
+
+PS C:\WINDOWS\system32> get-process | select-object name,vm, cpu -first 5 | Format-Table
+
+Name                      VM      CPU
+----                      --      ---
+AggregatorHost 2203419766784  2.65625
+ai             2203544174592  0.40625
+amdfendrsr        4388356096  13.1875
+AMDRSServ         4771000320    0.375
+AMDRSSrcExt       4870103040 2.765625
+
+
+PS C:\WINDOWS\system32> get-process | select-object name,vm, cpu -last 5
+
+Name                VM       CPU
+----                --       ---
+WmiApSrv 2203397980160  16.21875
+WmiPrvSE 2203478896640 37.453125
+WmiPrvSE 2203488620544 27.203125
+WmiPrvSE 2203406315520   1.46875
+WUDFHost 2203397664768  0.453125
+
+>get-service | out-default | out-file C:\abcde.txt // Pipeline ends at out-default
+**************************************************************************************
+By Value
+By Property Name
+Accept pipeline INput
+
+>get-service -name vss | stop-service // need to check 1st cmdlet output as input for the 2nd cmdlet for that we need help
+>get-help stop-service -full
+PS C:\WINDOWS\system32> get-help stop-service -full
+
+NAME
+    Stop-Service
+SYNOPSIS
+    Stops one or more running services.
+SYNTAX
+    Stop-Service -DisplayName <System.String[]> [-Exclude <System.String[]>] [-Force] [-Include <System.String[]>]
+    [-NoWait] [-PassThru] [-Confirm] [-WhatIf] [<CommonParameters>]
+
+    Stop-Service [-InputObject] <System.ServiceProcess.ServiceController[]> [-Exclude <System.String[]>] [-Force]
+    [-Include <System.String[]>] [-NoWait] [-PassThru] [-Confirm] [-WhatIf] [<CommonParameters>]
+
+    Stop-Service [-Name] <System.String[]> [-Exclude <System.String[]>] [-Force] [-Include <System.String[]>]
+    [-NoWait] [-PassThru] [-Confirm] [-WhatIf] [<CommonParameters>]
+
+ -InputObject <System.ServiceProcess.ServiceController[]>
+        Specifies ServiceController objects that represent the services to stop. Enter a variable that contains the
+        objects, or type a command or expression that gets the objects.
+
+        Required?                    true
+        Position?                    0
+        Default value                None
+        Accept pipeline input?       True (ByValue)
+        Accept wildcard characters?  false
+
+
+PS C:\WINDOWS\system32> get-service | gm
+   TypeName: System.ServiceProcess.ServiceController
+So identify where ServiceController is having then pipeline will take it as input for tha next cmdlet.
+
