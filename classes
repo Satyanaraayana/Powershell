@@ -1,8 +1,19 @@
 https://www.youtube.com/hashtag/powershellforsqldba
 https://www.youtube.com/watch?v=ij6T4MQoaOA
 >Invoke-Sqlcmd -ServerInstance $SQLServer -Database $Database -Query "SELECT * FROM [SalesLT].[Address]" -TrustServerCertificate | Export-Csv | Out-File "D:\azure_Training_online\table.csv"
+========================================
 PS C:\> Invoke-Sqlcmd -ServerInstance $SQLServer -Query "SELECT @@version"  -TrustServerCertificate
-
 Column1                                                                                           
 -------                                                                                           
 Microsoft SQL Server 2019 (RTM-GDR) (KB5058713) - 15.0.2135.5 (X64) ...
+=============================================
+foreach ($svr in ((get-content "D:\..\abcdef123.txt").split('=')[-1]).split(','))
+{
+$svr
+}
+
+split('=')----> split in to two parts
+[-1] ---------> Concider rightside value as a parameter
+[0] ---------> Concider leftside value as a parameter
+split(',')-----> Concider ',' separate values
+======================================================
